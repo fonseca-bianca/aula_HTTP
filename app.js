@@ -29,6 +29,25 @@ app.get('/usuarios', (req, res) => {
     res.send(usuarios)
 })
 
+app.post('/usuarios', (req, res) => {
+    usuarios.push(req.body)
+    res.send(usuarios)
+})
+
+app.put('/usuarios/:id', (req, res) => {
+    let usuario = usuarios.find(usr => usr.id == req.params.id)
+    usuario.nome = req.body.nome
+    usuario.sobrenome = req.body.sobrenome
+    usuario.idade = req.body.idade
+    res.send(usuarios)
+})
+
+app.delete('/usuarios/:id', (req, res) => {
+    let usuario = usuarios.find(usr => usr.id == req.params.id)
+    usuarios.splice(usuarios.indexOf(usuario), 1)
+    res.send(usuarios)
+})
+
 app.listen(8000, () => {
     console.log('Rodando na porta 8000')
 })
