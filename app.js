@@ -26,16 +26,21 @@ let usuarios = [
 
 app.use(express.json())
 app.get('/usuarios', (req, res) => {
-    res.send(usuarios)
+    res.status(200).send(usuarios)
 })
 
 app.post('/usuarios', (req, res) => {
     usuarios.push(req.body)
-    res.send(usuarios)
+    res.status(201).send(usuarios)
 })
 
 app.put('/usuarios/:id', (req, res) => {
     let usuario = usuarios.find(usr => usr.id == req.params.id)
+
+    if (!usuario){
+        return res.status(400).json({error: 'Usuario não encontrado.' });
+    }
+
     usuario.nome = req.body.nome
     usuario.sobrenome = req.body.sobrenome
     usuario.idade = req.body.idade
@@ -45,7 +50,7 @@ app.put('/usuarios/:id', (req, res) => {
 app.delete('/usuarios/:id', (req, res) => {
     let usuario = usuarios.find(usr => usr.id == req.params.id)
     usuarios.splice(usuarios.indexOf(usuario), 1)
-    res.send(usuarios)
+    res.status(204).send(usuarios)
 })
 
 app.listen(8000, () => {
